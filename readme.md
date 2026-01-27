@@ -351,7 +351,7 @@ __Creacion y edicion del script__
     DISK_HOME_SIZE=$(df -h –output=source,used,size,pcent | grep “home” | awk ‘{print $3}’)
     DISK_HOME_PERC=$(df -h –output=source,used,size,pcent | grep “home” | awk ‘{print $4}’)
     # 6. Porcentaje de uso de CPU
-    CPU_LOAD=$(top -bn1 | grep "load average" | awk '{print $(NF-2)}')
+    CPU_LOAD=$(top -bn1 | grep "Cpu(s)" | awk '{print $2 + $4}')
     # 7. Último reinicio
     LAST_BOOT=$(who -b | awk '{print $3 " " $4}')
     # 8. LVM activo o no
