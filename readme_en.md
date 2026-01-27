@@ -208,8 +208,22 @@ __Install Updates__
 __Installation:__
 
 	apt install sudo
-
 ### AppArmor
+__Installation:__
+
+	But it comes installed by default
+
+	sudo apt install apparmor apparmor-utils
+__Check during boot:__
+
+	sudo journalctl -u apparmor
+__Check status:__
+
+	sudo systemctl status apparmor
+__Verify that it is active and runs at startup:__
+
+	sudo systemctl is-enabled apparmor
+	sudo systemctl is-active apparmor
 __Check AppArmor Status:__
 
 	sudo systemctl status apparmor
@@ -238,9 +252,10 @@ Check Listening Ports:
 ss -tuln | grep “22”
 ss -tuln | grep “4242”
 
-Connect from Host PC:
+Connect by Host PC:
 
-ssh <username>@localhost -p 4242
+	ssh <username>@localhost -p 4242
+	ssh <username>@127.0.0.1 -p 4242
 
 ### UFW
 
@@ -340,53 +355,53 @@ __Creation and editing of the script__
 	nano /usr/local/bin/monitoring.sh
 
 	#!/bin/bash
-	# 1. System architecture and kernel version
+	# 1. Arquitectura del sistema y versión del kernel
 	ARCH=$(uname -a)
-	# 2. Number of physical cores
+	# 2. Número de núcleos físicos
 	PHYS_CPU=$(grep "physical id" /proc/cpuinfo | sort -u | wc -l)
-	# 3. Number of virtual cores (threads)
+	# 3. Número de núcleos virtuales (threads)
 	VIRT_CPU=$(nproc)
-	# 4. RAM used and percentage
+	# 4. RAM usada y porcentaje
 	MEM_USED=$(free -m | awk 'NR==2{print $3}')
 	MEM_TOTAL=$(free -m | awk 'NR==2{print $2}')
 	MEM_PERC=$(awk "BEGIN {printf \"%.2f\", ($MEM_USED/$MEM_TOTAL)*100}")
-	# 5. Disk available and percentage
-	DISK_SDA1_USED=$(df -h –output=source,used,size,pcent | grep “sda1” | awk ‘{print $2}’)
-	DISK_SDA1_SIZE=$(df -h –output=source,used,size,pcent | grep “sda1” | awk ‘{print $3}’)
-	DISK_SDA1_PERC=$(df -h –output=source,used,size,pcent | grep “sda1” | awk ‘{print $4}’)
+	# 5. Disco disponible y porcentaje
+	DISK_SDA1_USED=$(df -h --output=source,used,size,pcent | grep "sda1" | awk '{print $2}')
+	DISK_SDA1_SIZE=$(df -h --output=source,used,size,pcent | grep "sda1" | awk '{print $3}')
+	DISK_SDA1_PERC=$(df -h --output=source,used,size,pcent | grep "sda1" | awk '{print $4}')
 
-	DISK_ROOT_USED=$(df -h –output=source,used,size,pcent | grep “root” | awk ‘{print $2}’)
-	DISK_ROOT_SIZE=$(df -h –output=source,used,size,pcent | grep “root” | awk ‘{print $3}’)
-	DISK_ROOT_PERC=$(df -h –output=source,used,size,pcent | grep “root” | awk ‘{print $4}’)
+	DISK_ROOT_USED=$(df -h --output=source,used,size,pcent | grep "root" | awk '{print $2}')
+	DISK_ROOT_SIZE=$(df -h --output=source,used,size,pcent | grep "root" | awk '{print $3}')
+	DISK_ROOT_PERC=$(df -h --output=source,used,size,pcent | grep "root" | awk '{print $4}')
 
-	DISK_HOME_USED=$(df -h –output=source,used,size,pcent | grep “home” | awk ‘{print $2}’)
-	DISK_HOME_SIZE=$(df -h –output=source,used,size,pcent | grep “home” | awk ‘{print $3}’)
-	DISK_HOME_PERC=$(df -h –output=source,used,size,pcent | grep “home” | awk ‘{print $4}’)
-	# 6. CPU usage percentage
+	DISK_HOME_USED=$(df -h --output=source,used,size,pcent | grep "home" | awk '{print $2}')
+	DISK_HOME_SIZE=$(df -h --output=source,used,size,pcent | grep "home" | awk '{print $3}')
+	DISK_HOME_PERC=$(df -h --output=source,used,size,pcent | grep "home" | awk '{print $4}')
+	# 6. Porcentaje de uso de CPU
 	CPU_LOAD=$(top -bn1 | grep "Cpu(s)" | awk '{print $2 + $4}')
-	# 7. Last reboot
+	# 7. Último reinicio
 	LAST_BOOT=$(who -b | awk '{print $3 " " $4}')
-	# 8. LVM active or not
+	# 8. LVM activo o no
 	LVM_ACTIVE=$(lsblk | grep -q "lvm" && echo "yes" || echo "no")
-	# 9. Number of active connections
+	# 9. Número de conexiones activas
 	TCP_CONN=$(ss -tun | grep ESTAB | wc -l)
-	# 10. Number of logged-in users
+	# 10. Número de usuarios conectados
 	USER_LOG=$(users | wc -w)
-	# 11. IPv4 address and MAC
+	# 11. Dirección IPv4 y MAC
 	IPV4=$(hostname -I | awk '{print $1}')
 	MAC=$(ip link | grep ether | awk '{print $2}')
-	# 12. Number of commands executed with sudo
+	# 12. Número de comandos ejecutados con sudo
 	SUDO_CMDS=$(journalctl _COMM=sudo | grep COMMAND | wc -l)
-	# Display everything with wall
 
+	# Mostrar todo con wall
 	wall "
 	#Architecture: $ARCH
 	#CPU physical: $PHYS_CPU
 	#vCPU: $VIRT_CPU
 	#Memory Usage: $MEM_USED/$MEM_TOTAL MB ($MEM_PERC%)
-	#DISK:     sda1: $DISK_SDA1_USED/DISK_SDA1_SIZE ($DISK_SDA1_PERC)
-	#          root: $DISK_ROOT_USED/DISK_ROOT_SIZE ($DISK_ROOT_PERC)
-	#          home: $DISK_HOME_USED/DISK_HOME_SIZE ($DISK_HOME_PERC)
+	#DISK:     sda1: $DISK_SDA1_USED/$DISK_SDA1_SIZE ($DISK_SDA1_PERC)
+	#          root: $DISK_ROOT_USED/$DISK_ROOT_SIZE ($DISK_ROOT_PERC)
+	#          home: $DISK_HOME_USED/$DISK_HOME_SIZE ($DISK_HOME_PERC)
 	#CPU load: $CPU_LOAD
 	#Last boot: $LAST_BOOT
 	#LVM use: $LVM_ACTIVE
@@ -394,10 +409,13 @@ __Creation and editing of the script__
 	#User log: $USER_LOG
 	#Network: IP $IPV4 ($MAC)
 	#Sudo: $SUDO_CMDS cmd
-	“
+	"
 
-	__Configure cron__
+You need to make sure the file has execute permissions.
 
-		sudo crontab -e
-	Add the line:
-		*/10 * * * * /usr/local/bin/monitoring.sh
+	chmod 711 /usr/local/bin/monitoring.sh
+__Configure cron__
+
+	sudo crontab -e
+Add the line:
+	*/10 * * * * /usr/local/bin/monitoring.sh
