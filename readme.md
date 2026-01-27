@@ -204,6 +204,10 @@ __Instalar actualizaciones__
 __Instalación:__
 
     apt install sudo
+### AppArmor
+__Comprobar estado de AppArmor:__
+
+	/usr/sbin/aa-status
 ### SSH
 __Instalar herramienta OpenSSH:__
 
