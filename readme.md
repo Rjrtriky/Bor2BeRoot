@@ -207,7 +207,7 @@ __Instalación:__
 ### AppArmor
 __Comprobar estado de AppArmor:__
 
-	/usr/sbin/aa-status
+	sudo systemctl status apparmor
 ### SSH
 __Instalar herramienta OpenSSH:__
 
