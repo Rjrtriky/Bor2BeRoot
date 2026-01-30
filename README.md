@@ -108,7 +108,6 @@ Comprobaciones previas: Comprobar en la confiuracion de la maquina virtual en Re
     
     3. sudo
         ◦ Instalacion
-    
     4. ssh
         ◦ Instalacion
         ◦ Configuracion de ficheros para ssh
@@ -218,7 +217,7 @@ __Instalar actualizaciones__
 
 ### SUDO
 
-__Instalación:__
+__Instalación sudo:__
 
     apt install sudo
 ### AppArmor
@@ -426,3 +425,4 @@ __Configurar cron__
         sudo crontab -e
     añadir la linea
         */10 * * * * /usr/local/bin/monitoring.sh
+
