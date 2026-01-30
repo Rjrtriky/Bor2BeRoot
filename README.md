@@ -21,6 +21,23 @@ He elegido Debian 13.2.0 por los siguientes motivos:
     3. Hay mas docuentación.
 
 ### Cuestiones
+__Rocky vs Debian:__
+
+    ◦ Rocky:
+        ▪ Es una distribucion creada a partir de Red Hat Enterprise.
+        ▪ Su propisito es Servidor empresarial (estable, seguro y con soporte a largo plazo).
+        ▪ Se usa en Entornos de producción.
+        ▪ Se usa para servidores( Apache/Nginx), bases de datos (PostgreSQL, MySQL), Infraestructura de nube, Contenedores y Kubernetes y Sistemas legacy que requieren estabilidad extrema.
+    ◦ Debian: 
+        ▪ .Servidores web y de red (el "sistema operativo de Internet")
+        ▪ Sistemas embebidos y Raspberry Pi
+        ▪ Escritorios para usuarios avanzados
+        ▪ Distribuciones especializadas (Kali para pentesting, Tails para privacidad)
+    Por que Debian 13:
+    1. Ya lo uso en casa y me he acostumbrado a él.
+    2. Esta más enfocado para usuarios.
+    3. Es más sencilla la configuracion que Rocky.
+    4. La docuentación es mas extensa.
 
 __APTITUDE vs APT:__
 
