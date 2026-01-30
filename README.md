@@ -5,20 +5,10 @@
 ## 📖 Descripción
 
 ### Objetivo:
-    1. Crear y configurar una máquina virtual con Debian o Rocky Linux
-    2. Implementar medidas de seguridad avanzadas: particiones cifradas, firewall, políticas de contraseñas fuertes, configuración de sudo segura
+    1. Crear, instalar y configurar una máquina virtual con Debian o Rocky Linux. 
+    2. Implementar medidas de seguridad avanzadas: particiones cifradas, firewall, políticas de contraseñas fuertes, configuración de sudo segura.
     3. Desarrollar un script de monitoreo (monitoring.sh) que muestre información del sistema cada 10 minutos
-    4. Documentar todo en un README profesional con comparativas técnicas
-
-### Vision general:
-
-### Elecciones de distribución de Linux:
-
-He elegido Debian 13.2.0 por los siguientes motivos:
-
-    1. Ya lo uso en casa y me he acostumbrado a él.
-    2. Es mas sencillo que Rocky.
-    3. Hay mas docuentación.
+    4. Documentar todo en un README profesional con comparativas técnicas.
 
 ### Cuestiones
 __Rocky vs Debian:__
@@ -99,63 +89,106 @@ Ambos son para crear maquinas virtuales, pero en sistemas operativos anfitriones
 
 ## ⚙️ Instrucciones
 
-### Orden de ejecucion
+### Creacion de la maquina virtual
+Crearemos una maquina virtual nueva donde elegiremos:
+
+    -La carpeta donde se almacenará la maquina virtual.
+    -La imagen ISO con la distribucion de linux elegida.
+    -Omitir la instalacion desatendida.
+
+Con respecto al hardware a emular he optado por lo siguiente:
+
+    -De memoria RAM 4GB (4096MB).
+    -2 procesadores.
+    -12GB de Disco duro.
+
+Una vez que tenemos la maquina preparada, la arrancamos y comenzará la instalacion de la distribucion que viene el la imagen ISO.
+
+###  Instalacion de la distribución
+
+1. Usaremos la instalacion NO grafica.
+2. Seleccionamos el idioma, ubicacion y teclado relacionado con España.
+3. En el nombre de maquina o Hostname, ponemos [nombre usuario]42.
+4. Dejamos Dominio en blanco.
+5. Pide la contraseña de superusuario o root y la verificamos.
+6. Pide un usuario nuevo (el usuario de 42) y la contraseña corresppondiente.
+7. Seleccionamos la franja horaria de España.
+8. El particinamiento del disco duro lo haremos de manera Manual para dejarlo con 1 disco con una particion (boot) y otro disco encriptado, con 3 particiones cifradas (root, home y swap).
+9. Pide una contraseña para cifrar.
+10. Verificamos la estructura de discos.
+11. Configuramos de donde queremos que provengan el gestor de paquetes, omitiendo la configuracion del proxy.
+12. No marcamos ninguna de los entornos de escriitorio.
+13. Podemos dejar instalado el cargador de arranque Grub y seleccionamos el disco duro virtual.
+14. Reiniciamos.
+
+### Orden de ejecucion de la parctica.
 Comprobaciones previas: Comprobar en la confiuracion de la maquina virtual en Red/ Avanzado/ Reenvio dde puertos que este una conexion con el puerto 4242 en puerto invitado.
 
-    1. Comprobar disco duro
-    
-    2. Comprobar AppArmor
-    
-    3. sudo
-        ◦ Instalacion
-    4. ssh
-        ◦ Instalacion
-        ◦ Configuracion de ficheros para ssh
-        ◦ Comprobar estado
-        ◦ Reiniciar ssh
-        ◦ Comprobar estado
-        ◦ Verificar con ss -tunlp
-        ◦ Conectar con ordenador anfitrion.
-    
-    5. ufw
-        ◦ Instalacion
-        ◦ Comprobar estado
-        ◦ Activar
-        ◦ Comprobar estado
-        ◦ Habilitar puerto
-        ◦ Comprobar estatus
-    
-    6. Grupos y usuarios
-        ◦ Crear usuario
-        ◦ Crear grupo user42
-        ◦ Asignar usuarios a los grupos user42 y sudo
-    
-    7. Politicas de contraseñas
-        ◦ Configurar contraseña fuerte para sudo.
-        ◦ Configuración de política de contraseñas fuerte.
-    
-    8. Script monitoring.sh
-        ◦ Crear script
-        ◦ Temporizar su ejecucion cada 10 min.
-    
-    9. Cambiar nombre del host
+1. [Comprobar disco duro](#disco-duro)
 
-## 📚 Recursos
+2. [Comprobar AppArmor](#apparmor)
 
-### Documentacion
+3. [sudo](#sudo)
 
+    ◦ Instalacion
+4. [ssh](#ssh)
 
-## 🔄 Documentacion
+    ◦ Instalacion<br>
+    ◦ Configuracion de ficheros para ssh<br>
+    ◦ Comprobar estado<br>
+    ◦ Reiniciar ssh<br>
+    ◦ Comprobar estado<br>
+    ◦ Verificar con ss -tunlp<br>
+    ◦ Conectar con ordenador anfitrion.
+
+5. [ufw](#ufw)
+
+    ◦ Instalacion<br>
+    ◦ Comprobar estado<br>
+    ◦ Activar<br>
+    ◦ Comprobar estado<br>
+    ◦ Habilitar puerto<br>
+    ◦ Comprobar estatus
+
+6. [Grupos](#manejo-de-grupos) y [usuarios](#manejo-de-usuarios)
+    ◦ Crear usuario<br>
+    ◦ Crear grupo user42<br>
+    ◦ Asignar usuarios a los grupos user42 y sudo
+
+7. [Politicas de contraseñas](#contraseña)
+    ◦ Configurar contraseña fuerte para sudo.<br>
+    ◦ Configuración de política de contraseñas fuerte.
+
+8. [Script monitoring.sh](#scrip-de-monitoreo)
+    ◦ Crear script<br>
+    ◦ Temporizar su ejecucion cada 10 min.
+
+9. [Cambiar nombre del host](#sistema)
+
+##  Recursos
+
+__REFERENCIAS CLASICAS:__
+
+    -Documentación de Linux con man y en https://man7.org/linux/man-pages/man2/read.2.html
+    -Apuntes de la UPM.
+
+__USO DE IA:__
+
+    -Consulta sobre errores al crear maquinas virtuales (en ordenador propio).
+    -Traduccion de documentacion.
+    -Consulta de formato de ficheros readme.md y traduccir al ingles.
+
+## 📚 Documentacion
 
 ### Sistema
-__Version de distribution__
+#### Version de distribution
 
     cat /etc/os-release
-__Version de Kernel__
+#### Version de Kernel
 
     uname -a
     uname -r
-__Cambio de nombre HOST__
+#### Cambio de nombre HOST
 
         sudo hostnamectl set-hostname <nuevo nombre de sistema>
     Edita /etc/hosts para reflejar el cambio:
@@ -163,28 +196,28 @@ __Cambio de nombre HOST__
     reiniciar para que el el nombre actualice
 ### Disco duro
 
-__Comprobar particiones del disco duro:__
+#### Comprobar particiones del disco duro:
 
     lsblk
 ### Manejo de Usuarios
 
-__Crear usuario:__
+#### Crear usuario:
 
     sudo adduser <nombre usuario>
-__Agredar usuario al grupo:__
+#### Agredar usuario al grupo:
 
     sudo adduser <nombre usuario> <nombre grupo>
-__Quitar usuario del grupo:__
+#### Quitar usuario del grupo:
 
     sudo gpasswd -d <usuario> <nombre_del_grupo>
-__Cambio de contraseña:__
+#### Cambio de contraseña:
 
     sudo passwd root
     sudo passwd <nombre usuario>
-__Cambiar grupo principal de un usuario:__
+#### Cambiar grupo principal de un usuario:
 
     sudo usermod -g <new_grupo_primario> <usuario>
-__Listado de usuarios__
+#### Listado de usuarios
 
     getent passwd
     cut -d: -f1 /etc/passwd
@@ -192,114 +225,113 @@ __Listado de usuarios__
 
 ### Manejo de Grupos
 
-__Crear grupo:__
+#### Crear grupo:
 
     sudo addgroup <nombre grupo>
-__Elimiar Grupo:__
+#### Elimiar Grupo:
 
     sudo groupdel <nombre grupo>
     sudo groupdel -f <nombre grupo>
-__Comprobar estado del grupo:__
+#### Comprobar estado del grupo:
 
     getent group <nombre grupo>
-__Saber que grupos hay:__
+#### Saber que grupos hay:
 
     nano /etc/group
 
 ### Actualizacion de paquetes de sistema
 
-__Comprobar actualizaciones__
+#### Comprobar actualizaciones
 
     apt update
-__Instalar actualizaciones__
+#### Instalar actualizaciones
 
     apt upgrade -y
 
 ### SUDO
 
-__Instalación sudo:__
+#### Instalación sudo:
 
     apt install sudo
 ### AppArmor
-__Instalacion:__
-
-    Pero viene instalado por defecto
+Pero viene instalado por defecto
+#### Instalacion AppArmor:
 
     sudo apt install apparmor apparmor-utils
-__Comprobar durante el arranque:__
+#### Comprobar durante el arranque:
 
     sudo journalctl -u apparmor
-__Comprobar estado:__
+#### Comprobar estado:
 
     sudo systemctl status apparmor
-__Verificar que está activo y se ejecuta al inicio:__
+#### Verificar que está activo y se ejecuta al inicio:
 
     sudo systemctl is-enabled apparmor
     sudo systemctl is-active apparmor
-__Comprobar estado de AppArmor:__
+#### Comprobar estado de AppArmor:
 
 	sudo systemctl status apparmor
 ### SSH
-__Instalar herramienta OpenSSH:__
+#### Instalar SSH:
 
     apt install ssh
-__Comprobar estado del servicio SSH:__
+#### Comprobar estado del servicio SSH:
 
     sudo service ssh status
-__Reiniciar servicio:__
+#### Reiniciar servicio:
 
     sudo service ssh restart
-__Ficheros de configuracion:__
+#### Ficheros de configuracion:
 
     /etc/ssh/sshd_config
         Port 4242
         PermitRootLogin no
     /etc/ssh/ssh_config
         Port 4242
-__Comprobar escucha por puertos:__
+#### Comprobar escucha por puertos:
 
     ss -tuln | grep “22”
     ss -tuln | grep “4242”
-__Conectar desde anfitrión:__
+#### Conectar desde anfitrión:
 
     ssh <nombbre usuario>@localhost -p 4242
     ssh <nombbre usuario>@127.0.0.1 -p 4242
 
 ### UFW
 
-__Instalacion__
+#### Instalacion
 
     sudo install ufw
-__Habilitar__
+#### Habilitar
 
     sudo ufw enable
-__Deshabilitar__
+#### Deshabilitar
 
     sudo ufw disable
-__Recargar las reglar de nuevo__
+#### Recargar las reglar de nuevo
 
     sudo ufw reload
-__Comprobar estatus__
+#### Comprobar estatus
 
     sudo ufw status
-__Habilitar puertos__
+#### Habilitar puertos
 
     Puertos sueltos
         sudo ufw allow <puerto>[ , <puerto>]
     Rango de puertos
         sudo ufw allow [<puerto>:<puerto>]
-__Desabilitar puertos__
+#### Desabilitar puertos
 
     sudo ufw deny <puerto>
 
 ### Contraseña
 
-__CONFIGURAR CONTRASEÑA FUERTE PARA SUDO__
+#### CONFIGURAR CONTRASEÑA FUERTE PARA SUDO
 
-__Crear una carpeta sudo, en /var/log/­__
+#### Crear una carpeta sudo, en /var/log/
 
     mkdir -p /var/log/sudo
-__Crear y editar el fichero y escribimos__
+#### Crear y editar el fichero y escribimos
 
     nano /etc/sudoers.d/sudo_config
  
@@ -318,18 +350,18 @@ __Crear y editar el fichero y escribimos__
     # Define el PATH seguro para comandos ejecutados con sudo
     Defaults  secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 
-__CONFIGURACIÓN DE POLÍTICA DE CONTRASEÑAS FUERTE__
+#### CONFIGURACIÓN DE POLÍTICA DE CONTRASEÑAS FUERTE
 
-__Editar el fichero /etc/login.defs__
+#### Editar el fichero /etc/login.defs
 
     PASS_MAX_DAYS   30 (tiempo de expiración de la contraseña en dias)
     PASS_MIN_DAYS   2  (número mínimo de días permitido antes de modificar una contraseña)
     PASS_WARN_AGE   7  (Numero de dias para avisar antes de caducar la contraseña)
 
-__Instalar libpam-pwquality__
+#### Instalar libpam-pwquality
 
     apt install libpam-pwquality
-__Editar /etc/pam.d/common-password__
+#### Editar /etc/pam.d/common-password
 
     /etc/security/pwquality.conf
 Ponemos el - ya que debe contener como mínimo un carácter, si ponemos + nos referimos a como máximo esos caracteres.
@@ -345,17 +377,17 @@ Ponemos el - ya que debe contener como mínimo un carácter, si ponemos + nos re
     difok=7         (Debe tener al menos 7 caracteres que no sean parte de la antigua contraseña)
     enforce_for_root(Implementar esta política para el usuario root.)
 
-__Comprobar  las politicas de pass__
+#### Comprobar  las politicas de pass
 
     sudo chage -l <nombre usuario>
-__Aplicar las a los usuarios anteriores__
+#### Aplicar las a los usuarios anteriores
 
     sudo chage -M 30 <nombre usuario>
     sudo chage -m 2 <nombre usuario>
     sudo chage -W 7 <nombre usuario>
 
 ### Scrip de Monitoreo
-__Creacion y edicion del script__
+#### Creacion y edicion del script
 
     nano /usr/local/bin/monitoring.sh
 
@@ -420,7 +452,7 @@ Hay que asegurarse que el fichero tiene permisos de ejecucion
 
     chmod 711 /usr/local/bin/monitoring.sh
 
-__Configurar cron__
+#### Configurar cron
 
         sudo crontab -e
     añadir la linea

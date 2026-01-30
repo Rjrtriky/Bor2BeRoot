@@ -99,95 +99,141 @@ Both are for creating virtual machines, but on different host operating systems.
 
 ## ⚙️ Instructions
 
-### Execution Order
+### Creating the Virtual Machine
+We will create a new virtual machine where we will choose:
 
-Pre-checks: Check in the virtual machine configuration under Network/ Advanced/ Port Forwarding that there is a connection with port 4242 as guest port.
-text
+	-The folder where the virtual machine will be stored.
+	-The ISO image with the chosen Linux distribution.
+	-Skip the unattended installation.
 
-	1. Check hard disk
+Regarding the hardware to emulate, I have chosen the following:
 
-	2. Check AppArmor
+	-4GB of RAM (4096MB).
+	-2 processors.
+	-12GB of hard drive space.
 
-	3. sudo
-		◦ Installation
+Once the machine is ready, we boot it and the installation of the distribution contained in the ISO image will begin.
 
-	4. ssh
-		◦ Installation
-		◦ Configuration of ssh files
-		◦ Check status
-		◦ Restart ssh
-		◦ Check status
-		◦ Verify with ss -tunlp
-		◦ Connect from host machine.
+### Distribution Installation
 
-	5. ufw
-		◦ Installation
-		◦ Check status
-		◦ Activate
-		◦ Check status
-		◦ Allow port
-		◦ Check status
+1. We will use the non-graphical installation.
+2. Select the language, location, and keyboard layout for Spain.
+3. In the hostname field, enter [username]42.
+4. Leave the domain field blank.
+5. Enter the superuser or root password.
+6. Enter a new user (username 42) and the corresponding password.
+7. Select the Spanish time zone.
+8. Manually partition the hard drive, creating one disk with a single partition (boot) and another encrypted disk with three encrypted partitions (root, home, and swap).
+9. Enter a password for encryption.
+10. Verify the disk structure.
+11. Configure the package manager source, omitting the proxy configuration. 12. We left all desktop environments unchecked.
+13. We can leave the Grub bootloader installed and select the virtual hard drive.
+14. We restarted.
 
-	6. Groups and users
-		◦ Create user
-		◦ Create group user42
-		◦ Assign users to user42 and sudo groups
+### Practice Execution Order
 
-	7. Password policies
-		◦ Configure strong password for sudo.
-		◦ Configure strong password policy.
+Preliminary Checks: Verify in the virtual machine configuration under Network/Advanced/Port Forwarding that a connection is established using port 4242 as the guest port.
 
-	8. Script monitoring.sh
-		◦ Create script
-		◦ Schedule its execution every 10 min.
+1. [Check hard disk](#hard-disk)
 
-	9. Change hostname
+2. [Check AppArmor](#apparmor)
 
-## 🔄 Resources
+3. [sudo](#sudo)
+
+	◦ Installation
+4. [ssh](#ssh)
+
+	◦ Installation<br>
+	◦ SSH configuration files<br>
+	◦ Check status<br>
+	◦ Restart SSH<br>
+	◦ Check status<br>
+	◦ Verify with ss -tunlp<br>
+	◦ Connect to host computer.<br>
+
+5. [ufw](#ufw)
+
+	◦ Installation<br>
+	◦ Check status<br>
+	◦ Activate<br>
+	◦ Check status<br>
+	◦ Enable port<br>
+	◦ Check status<br>
+
+6. [Groups](#group-management) and [users](#user-management)
+
+	◦ Create user<br>
+	◦ Create group user42<br>
+	◦ Assign users to groups user42 and sudo<br>
+
+7. [Password Policies](#password)
+
+	◦ Configure strong password for sudo.<br>
+	◦ Configure strong password policy.
+
+8. [monitoring.sh Script](#monitoring-script)
+
+	◦ Create script<br>
+	◦ Schedule its execution every 10 minutes.
+
+9. [Change Hostname](#system)
+
+## Resources
+
+__CLASSIC REFERENCES:__
+
+	-Linux documentation using man and at https://man7.org/linux/man-pages/man2/read.2.html
+	-UPM notes.
+
+__USE OF AI:__
+
+	-Troubleshooting errors when creating virtual machines (on my own computer).
+	-Translating documentation.
+	-Troubleshooting the readme.md file format and translating it into English.
 
 ## 📚 Documentation
 ### System
-__Distribution Version__
+#### Distribution Version
 
 	cat /etc/os-release
 
-__Kernel Version__
+#### Kernel Version
 
 	uname -a
 	uname -r
 
-__Hostname Change__
+#### Hostname Change
 
 	    sudo hostnamectl set-hostname <new system name>
 	Edit /etc/hosts to reflect the change:
     	127.0.0.1 your_login42
 	Reboot for the name to update.
 
-__Hard Disk__
+### Hard Disk
 
-__Check Hard Disk Partitions:__
+#### Check Hard Disk Partitions:
 
 	lsblk
 ### User Management
-__Create User:__
+#### Create User:
 
 	sudo adduser <username>
-__Add User to Group:__
+#### Add User to Group:
 
 	sudo adduser <username> <group name>
-__Remove User from Group:__
+#### Remove User from Group:
 
 	sudo gpasswd -d <user> <group_name>
-__Change Password:__
+#### Change Password:
 
 	sudo passwd root
 	sudo passwd <username>
 
-__Change a User's Primary Group:__
+#### Change a User's Primary Group:
 
 	sudo usermod -g <new_primary_group> <user>
 
-__List Users__
+#### List Users
 
 	getent passwd
 	cut -d: -f1 /etc/passwd
@@ -195,70 +241,70 @@ __List Users__
 
 ### Group Management
 
-__Create Group:__
+#### Create Group:
 
 	sudo addgroup <group name>
 
-__Delete Group:__
+#### Delete Group:
 
 	sudo groupdel <group name>
 	sudo groupdel -f <group name>
 
-__Check Group Status:__
+#### Check Group Status:
 
 	getent group <group name>
 
-__See Existing Groups:__
+#### See Existing Groups:
 
 	nano /etc/group
 
 ### System Package Updates
 
-__Check for Updates__
+#### Check for Updates
 
 	apt update
 
-__Install Updates__
+#### Install Updates
 
 	apt upgrade -y
 
 ### SUDO
 
-__Installation:__
+#### Installation:
 
 	apt install sudo
 ### AppArmor
-__Installation:__
+#### Installation:
 
 	But it comes installed by default
 
 	sudo apt install apparmor apparmor-utils
-__Check during boot:__
+#### Check during boot:
 
 	sudo journalctl -u apparmor
-__Check status:__
+#### Check status:
 
 	sudo systemctl status apparmor
-__Verify that it is active and runs at startup:__
+#### Verify that it is active and runs at startup:
 
 	sudo systemctl is-enabled apparmor
 	sudo systemctl is-active apparmor
-__Check AppArmor Status:__
+#### Check AppArmor Status:
 
 	sudo systemctl status apparmor
 ### SSH
-__Install OpenSSH Tool:__
+#### Install OpenSSH Tool:
 
 	apt install ssh
-__Check SSH Service Status:__
+#### Check SSH Service Status:
 
 	sudo service ssh status
 
-__Restart Service:__
+#### Restart Service:
 
 	sudo service ssh restart
 
-__Configuration Files:__
+#### Configuration Files:
 
 	/etc/ssh/sshd_config
 		Port 4242
@@ -278,39 +324,39 @@ Connect by Host PC:
 
 ### UFW
 
-__Installation__
+#### Installation
 
 	sudo install ufw
-__Enable__
+#### Enable
 
 	sudo ufw enable
-__Disable__
+#### Disable
 
 	sudo ufw disable
-__Reload Rules__
+#### Reload Rules
 
 	sudo ufw reload
-__Check Status__
+#### Check Status
 
 	sudo ufw status
-__Allow Ports__
+#### Allow Ports
 
 	Single Ports
 		sudo ufw allow <port>[ , <port>]
 	Port Range
 		sudo ufw allow [<port>:<port>]
-__Deny Ports__
+#### Deny Ports
 
 	sudo ufw deny <port>
 
 ### Password
 
-__CONFIGURE STRONG PASSWORD FOR SUDO__
+#### CONFIGURE STRONG PASSWORD FOR SUDO
 
-__Create a sudo folder in /var/log/__
+##### Create a sudo folder in /var/log/
 
 	mkdir -p /var/log/sudo
-__Create and edit the file and write__
+##### Create and edit the file and write
 
 	nano /etc/sudoers.d/sudo_config
 
@@ -328,19 +374,19 @@ __Create and edit the file and write__
 	Defaults  requiretty
 	# Define the secure PATH for commands executed with sudo
 	Defaults  secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
-__CONFIGURE STRONG PASSWORD POLICY__
+#### CONFIGURE STRONG PASSWORD POLICY
 
-__Edit the file /etc/login.defs__
+##### Edit the file /etc/login.defs
 
 	nano /etc/login.defs
 
 	PASS_MAX_DAYS   30 (password expiration time in days)
 	PASS_MIN_DAYS   2  (minimum number of days allowed before changing a password)
 	PASS_WARN_AGE   7  (Number of days to warn before password expires)
-__Install libpam-pwquality__
+##### Install libpam-pwquality
 
 	apt install libpam-pwquality
-__Edit /etc/pam.d/common-password__
+##### Edit /etc/pam.d/common-password
 
 	/etc/security/pwquality.conf
 
@@ -357,11 +403,11 @@ text
 	difok=7         (Must have at least 7 characters that are not part of the old password)
 	enforce_for_root(Enforce this policy for the root user.)
 
-__Check password policies__
+##### Check password policies
 
 	sudo chage -l <username>
 
-__Apply them to previous users:__
+##### Apply them to previous users:
 
 	sudo chage -M 30 <username>
 	sudo chage -m 2 <username>
@@ -369,7 +415,7 @@ __Apply them to previous users:__
 
 ### Monitoring Script
 
-__Creation and editing of the script__
+#### Creation and editing of the script
 
 	nano /usr/local/bin/monitoring.sh
 
@@ -433,7 +479,7 @@ __Creation and editing of the script__
 You need to make sure the file has execute permissions.
 
 	chmod 711 /usr/local/bin/monitoring.sh
-__Configure cron__
+#### Configure cron
 
 	sudo crontab -e
 Add the line:
