@@ -124,6 +124,8 @@ Una vez que tenemos la maquina preparada, la arrancamos y comenzará la instalac
 ### Orden de ejecucion de la parctica.
 Comprobaciones previas: Comprobar en la confiuracion de la maquina virtual en Red/ Avanzado/ Reenvio dde puertos que este una conexion con el puerto 4242 en puerto invitado.
 
+**OJO: Hay que clonar la maquina virtual y trabajar sobre ella.**
+
 1. [Comprobar disco duro](#disco-duro)
 
 2. [Comprobar AppArmor](#apparmor)
@@ -294,14 +296,13 @@ Pero viene instalado por defecto
     ss -tuln | grep “4242”
 #### Conectar desde anfitrión:
 
-    ssh <nombbre usuario>@localhost -p 4242
-    ssh <nombbre usuario>@127.0.0.1 -p 4242
+    ssh <nombbre usuario>@127.0.1.1 -p 4242
 
 ### UFW
 
 #### Instalacion
 
-    sudo install ufw
+    apt install ufw
 #### Habilitar
 
     sudo ufw enable
@@ -340,7 +341,7 @@ Pero viene instalado por defecto
     # Mensaje personalizado cuando se ingresa una contraseña incorrecta
     Defaults  badpass_message="La contraseña es incorrecta."
     # Archivo de registro(log) para eventos de sudo
-    Defaults  logfile="/var/log/sudo/sudo.log "
+    Defaults  logfile="/var/log/sudo/sudo.log"
     # Habilitar registro de entrada y salida de comandos
     Defaults  log_input, log_output
     # Directorio para almacenar logs de I/O
@@ -367,15 +368,24 @@ Pero viene instalado por defecto
 Ponemos el - ya que debe contener como mínimo un carácter, si ponemos + nos referimos a como máximo esos caracteres.
 
     
-    retry=3         (Numero de reintentos)
-    minlen=10       (La cantidad mínima de caracteres que debe contener la contraseña)
-    ucredit=-1      (Como mínimo debe contener una letra mayúscula.)
-    dcredit=-1      (Como mínimo debe contener un dígito)
-    lcredit=-1      (Como mínimo debe contener una letra minúscula.)
-    maxrepeat=3     (No puede tener más de 3 veces seguidas el mismo carácter.)
-    reject_username (No puede contener el nombre del usuario.)
-    difok=7         (Debe tener al menos 7 caracteres que no sean parte de la antigua contraseña)
-    enforce_for_root(Implementar esta política para el usuario root.)
+	#Numero de reintentos
+	retry=3
+	#La cantidad mínima de caracteres que debe contener la contraseña
+	minlen=10
+	#Como mínimo debe contener una letra mayúscula.
+	ucredit=-1
+	#Como mínimo debe contener un dígito
+	dcredit=-1 
+	#Como mínimo debe contener una letra minúscula.
+	lcredit=-1
+	#No puede tener más de 3 veces seguidas el mismo carácter.
+	maxrepeat=3
+	#No puede contener el nombre del usuario.
+	reject_username 
+	#Debe tener al menos 7 caracteres que no sean parte de la antigua contraseña
+	difok=7
+	#Implementar esta política para el usuario root.
+	enforce_for_root
 
 #### Comprobar  las politicas de pass
 
@@ -450,7 +460,7 @@ Ponemos el - ya que debe contener como mínimo un carácter, si ponemos + nos re
 
 Hay que asegurarse que el fichero tiene permisos de ejecucion
 
-    chmod 711 /usr/local/bin/monitoring.sh
+    chmod 777 /usr/local/bin/monitoring.sh
 
 #### Configurar cron
 
