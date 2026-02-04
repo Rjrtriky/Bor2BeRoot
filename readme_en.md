@@ -1,23 +1,15 @@
 *This project has been created as part of the 42 curriculum by rjuarez-*
 
 # 📜 Born2beroot
+
 ## 📖 Description
+
 ### Objective:
 
 	1. Create and configure a virtual machine with Debian or Rocky Linux
 	2. Implement advanced security measures: encrypted partitions, firewall, strong password policies, secure sudo configuration
 	3. Develop a monitoring script (monitoring.sh) that displays system information every 10 minutes
 	4. Document everything in a professional README with technical comparisons
-
-### Overview:
-
-### Linux Distribution Choices:
-
-I chose Debian 13.2.0 for the following reasons:
-
-	1. I already use it at home and am accustomed to it.
-	2. It is simpler than Rocky.
-	3. There is more documentation.
 
 ### Questions
 
@@ -182,14 +174,15 @@ Preliminary Checks: Verify in the virtual machine configuration under Network/Ad
 
 __CLASSIC REFERENCES:__
 
-	-Linux documentation using man and at https://man7.org/linux/man-pages/man2/read.2.html
-	-UPM notes.
+* Linux documentation using man and at https://man7.org/linux/man-pages/man2/read.2.html
+* https://programminghistorian.org/es/lecciones/introduccion-a-markdown
+* UPM notes.
 
 __USE OF AI:__
 
-	-Troubleshooting errors when creating virtual machines (on my own computer).
-	-Translating documentation.
-	-Troubleshooting the readme.md file format and translating it into English.
+* Troubleshooting errors when creating virtual machines (on my own computer).
+* Translating documentation.
+* Troubleshooting the readme.md file format and translating it into English.
 
 ## 📚 Documentation
 ### System
@@ -266,7 +259,7 @@ __USE OF AI:__
 
 #### Install Updates
 
-	apt upgrade -y
+	apt upgrade
 
 ### SUDO
 
@@ -276,9 +269,9 @@ __USE OF AI:__
 ### AppArmor
 #### Installation:
 
-	But it comes installed by default
+But it comes installed by default
 
-	sudo apt install apparmor apparmor-utils
+	apt install apparmor apparmor-utils
 #### Check during boot:
 
 	sudo journalctl -u apparmor
@@ -326,7 +319,7 @@ Connect by Host PC:
 
 #### Installation
 
-	sudo install ufw
+	apt install ufw
 #### Enable
 
 	sudo ufw enable
@@ -380,9 +373,12 @@ Connect by Host PC:
 
 	nano /etc/login.defs
 
-	PASS_MAX_DAYS   30 (password expiration time in days)
-	PASS_MIN_DAYS   2  (minimum number of days allowed before changing a password)
-	PASS_WARN_AGE   7  (Number of days to warn before password expires)
+	#password expiration time in days
+	PASS_MAX_DAYS 30
+	#minimum number of days allowed before changing a password
+	PASS_MIN_DAYS 2
+	#Number of days to warn before password expires
+	PASS_WARN_AGE 7
 ##### Install libpam-pwquality
 
 	apt install libpam-pwquality
@@ -393,15 +389,24 @@ Connect by Host PC:
 We use - because it must contain at least one character; if we use + we refer to at most those characters.
 text
 
-	retry=3         (Number of retries)
-	minlen=10       (Minimum number of characters the password must contain)
-	ucredit=-1      (Must contain at least one uppercase letter.)
-	dcredit=-1      (Must contain at least one digit)
-	lcredit=-1      (Must contain at least one lowercase letter.)
-	maxrepeat=3     (Cannot have the same character more than 3 times in a row.)
-	reject_username (Cannot contain the username.)
-	difok=7         (Must have at least 7 characters that are not part of the old password)
-	enforce_for_root(Enforce this policy for the root user.)
+	#Number of retries
+	retry=3
+	#Minimum number of characters the password must contain
+	minlen=10
+	#Must contain at least one uppercase letter.
+	ucredit=-1
+	#Must contain at least one digit
+	dcredit=-1
+	#Must contain at least one lowercase letter.
+	lcredit=-1
+	#Cannot have the same character more than 3 times in a row.
+	maxrepeat=3
+	#Cannot contain the username.
+	reject_username
+	#Must have at least 7 characters that are not part of the old password
+	difok=7
+	#Enforce this policy for the root user.
+	enforce_for_root
 
 ##### Check password policies
 
@@ -478,9 +483,9 @@ text
 
 You need to make sure the file has execute permissions.
 
-	chmod 711 /usr/local/bin/monitoring.sh
+	chmod 777 /usr/local/bin/monitoring.sh
 #### Configure cron
 
-	sudo crontab -e
-Add the line:
-	*/10 * * * * /usr/local/bin/monitoring.sh
+		sudo crontab -e
+	Add the line:
+		*/10 * * * * /usr/local/bin/monitoring.sh

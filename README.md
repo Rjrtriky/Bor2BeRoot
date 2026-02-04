@@ -171,14 +171,15 @@ Comprobaciones previas: Comprobar en la confiuracion de la maquina virtual en Re
 
 __REFERENCIAS CLASICAS:__
 
-    -Documentación de Linux con man y en https://man7.org/linux/man-pages/man2/read.2.html
-    -Apuntes de la UPM.
+* Documentación de Linux con man y en https://man7.org/linux/man-pages/man2/read.2.html
+* https://programminghistorian.org/es/lecciones/introduccion-a-markdown
+* Apuntes de la UPM.
 
 __USO DE IA:__
 
-    -Consulta sobre errores al crear maquinas virtuales (en ordenador propio).
-    -Traduccion de documentacion.
-    -Consulta de formato de ficheros readme.md y traduccir al ingles.
+* Consulta sobre errores al crear maquinas virtuales (en ordenador propio).
+* Traduccion de documentacion.
+* Consulta de formato de ficheros readme.md y traduccir al ingles.
 
 ## 📚 Documentacion
 
@@ -248,7 +249,7 @@ __USO DE IA:__
     apt update
 #### Instalar actualizaciones
 
-    apt upgrade -y
+    apt upgrade
 
 ### SUDO
 
@@ -259,7 +260,7 @@ __USO DE IA:__
 Pero viene instalado por defecto
 #### Instalacion AppArmor:
 
-    sudo apt install apparmor apparmor-utils
+    apt install apparmor apparmor-utils
 #### Comprobar durante el arranque:
 
     sudo journalctl -u apparmor
@@ -355,9 +356,12 @@ Pero viene instalado por defecto
 
 #### Editar el fichero /etc/login.defs
 
-    PASS_MAX_DAYS   30 (tiempo de expiración de la contraseña en dias)
-    PASS_MIN_DAYS   2  (número mínimo de días permitido antes de modificar una contraseña)
-    PASS_WARN_AGE   7  (Numero de dias para avisar antes de caducar la contraseña)
+    #Tiempo de expiración de la contraseña en dias
+    PASS_MAX_DAYS 30
+    #Número mínimo de días permitido antes de modificar una contraseña
+    PASS_MIN_DAYS 2
+    #Número de dias para avisar antes de caducar la contraseña
+    PASS_WARN_AGE 7
 
 #### Instalar libpam-pwquality
 
